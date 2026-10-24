@@ -155,6 +155,7 @@ export async function refreshPixi(projectPath: string): Promise<PixiEnvironment[
                         managerId: PIXI_MANAGER_ID,
                     },
                     pixiInfo,
+                    pixiEnvName: pixiEnv.name,
                     packages: pixiPkgsToPackages(pixiPackages, pixiEnv.prefix),
                 } as PixiEnvironment;
             }),

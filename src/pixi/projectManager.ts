@@ -71,8 +71,19 @@ export class PixiPackageManager implements PackageManager, Disposable {
                     return;
                 }
 
+                // `environment.name` is the display name (e.g. "proj:default (3.12.0)"), which pixi rejects.
+                // Use the real pixi environment name, falling back to a lookup by prefix (envId.id).
+                const pixiEnvName =
+                    environment.pixiEnvName ??
+                    environment.pixiInfo.environments_info.find((e) => e.prefix === environment.envId.id)?.name;
+
+                if (!pixiEnvName) {
+                    traceVerbose(`Could not determine pixi environment name for ${environment.envId.id}; skipping.`);
+                    return;
+                }
+
                 const projectPath = path.dirname(environment.pixiInfo.project_info.manifest_path);
-                const pixiPackages = await listPixiPackages(environment.name, projectPath);
+                const pixiPackages = await listPixiPackages(pixiEnvName, projectPath);
 
                 const before = environment.packages;
                 const after = pixiPkgsToPackages(pixiPackages, environment.envId.id);

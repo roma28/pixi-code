@@ -19,5 +19,7 @@ export interface PixiPackage {
 
 export interface PixiEnvironment extends PythonEnvironment {
     pixiInfo: PixiInfo;
+    /** The real pixi environment name (e.g. "default"), as opposed to the display name. */
+    pixiEnvName: string;
     packages: Package[];
 }
